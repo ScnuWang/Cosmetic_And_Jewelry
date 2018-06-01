@@ -11,11 +11,10 @@ from urllib import parse
 
 # 构建请求地址
 
-        # 中国香港
+        # 中国香港  使用英文数据
 website_url = "https://www.swarovski.com"
-url = "https://www.swarovski.com/Web_HK/zh/json/json-result?"
+url = "https://www.swarovski.com/Web_HK/en/json/json-result?"
 query_term = "&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=fk0KaVgfKRcAAAFjv9t6fYxb&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2Ffk0KaVgfKRcAAAFjv9t6fYxb=xxcKaVgfHFgAAAFjvtt6fYxb&@Sort.FFSort=0&@Page=1"
-query_term = "&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=fk0KaVgfKRcAAAFjv9t6fYxb&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2Ffk0KaVgfKRcAAAFjv9t6fYxb=xxcKaVgfHFgAAAFjvtt6fYxb&@Sort.FFSort=0&@Page=3"
 
 
 # 组装请求地址
