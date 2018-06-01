@@ -7,14 +7,14 @@ import os
 from urllib import parse
 
 
-#  项链
+#  链坠
 
 # 构建请求地址
 
-        # 德国
+# 中国香港  使用英文数据
 website_url = "https://www.swarovski.com"
-url = "https://www.swarovski.com/Web_DE/de/json/json-result?"
-query_term = "&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=KdcKaVgfUt4AAAFjkPF6fYwv&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FKdcKaVgfUt4AAAFjkPF6fYwv=aZkKaVgf510AAAFjw_F6fYwv&@Sort.FFSort=0&@Page=1"
+url = "https://www.swarovski.com/Web_HK/en/json/json-result?"
+query_term = "&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=fk0KaVgfKRcAAAFjv9t6fYxb&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2Ffk0KaVgfKRcAAAFjv9t6fYxb=GSkKaVgfEYwAAAFj0tt6fYxb&@Sort.FFSort=0&@Page="
 
 
 # 组装请求地址
@@ -29,7 +29,7 @@ def encode_url(url, query_term, page_count):
 # 获取产品总页数
 page_count = 1
 response = json.loads(requests.get(encode_url(url,query_term,page_count)).text)
-# print(response['SearchResult']['PageCount'])
+print(response['SearchResult']['PageCount'])
 
 # 保存数据至是数据库
 
@@ -39,6 +39,7 @@ db = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='admin', d
 cursor = db.cursor()
 
 # 解析数据
+print(response)
 total_count = response['SearchResult']['PageCount']
 while page_count <= total_count:
     request_url = encode_url(url,query_term,page_count)
@@ -48,13 +49,13 @@ while page_count <= total_count:
     # 保存数据为文件
     file_time = time.strftime("%Y%m%d", time.localtime())
     # 文件名组成部分：品牌名称+ 时间 + 地点 + 分类 + 页数
-    fileName = str(1) + '_' + str(file_time) + '_' + str(3) + '_' + str(1) + '_' + str(page_count) + '.json'
+    fileName = str(1) + '_' + str(file_time) + '_' + str(2) + '_' + str(2) + '_' + str(page_count) + '.json'
 
     # 判断文件夹是否存在，不存在的话就新建文件夹
-    path = 'data'
-    if not os.path.exists(path) :
+    path = '../data'
+    if not os.path.exists(path):
         os.mkdir(path)
-    f = open('data/'+fileName, 'a+', encoding='utf-8')
+    f = open('../data/' + fileName, 'a+', encoding='utf-8')
     f.write(response)
     f.close()
 
@@ -65,9 +66,9 @@ while page_count <= total_count:
         original_id = product['SKU']
         # print(original_id)
         brand_id = 1
-        sales_location = 3
+        sales_location = 2
         product_name = product['Name']
-        product_price = int(re.sub('\D',"",product['Price']))/100
+        product_price = int(re.sub('\D',"",product['Price']))
         original_currency = re.sub(r'[^A-Z]', '', product['Price'])
         product_url = product['DetailPage']
         product_image = website_url + product['ProductImage']
@@ -75,12 +76,12 @@ while page_count <= total_count:
         if product['OldPrice'] == "":
             old_price = 0.00
         else:
-            old_price = int(re.sub('\D',"",product['OldPrice']))/100
+            old_price = int(re.sub('\D',"",product['OldPrice']))
         nick_name = ""
         cny_product_price = 0.00
         cny_exchange_rate = 0.00
         product_status = 1 # 1：在售；2：下架；3新上；4：异常
-        category_id = 1
+        category_id = 2
         update_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
 
