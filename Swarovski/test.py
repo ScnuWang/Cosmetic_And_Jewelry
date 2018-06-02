@@ -8,8 +8,6 @@ from urllib import parse
 
 
 # 一个地域的所有分类
-#  项链
-
 
 # 组装请求地址
 def encode_url(url, query_term, page_count):
@@ -19,16 +17,14 @@ def encode_url(url, query_term, page_count):
     url_encode = url+encode_prarms
     return url_encode
 
+
 def all(website_url,url,query_term,sales_location,category_id):
-
-
 
     # 获取产品总页数
     page_count = 1
     response = json.loads(requests.get(encode_url(url,query_term,page_count)).text)
     # print(response['SearchResult']['PageCount'])
 
-    # 保存数据至是数据库
 
     # 打开数据库连接
     db = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='admin', db='data', charset="utf8")
@@ -83,7 +79,7 @@ def all(website_url,url,query_term,sales_location,category_id):
 
             try:
                 # 执行sql语句
-                # cursor.executemany()
+                # 保存数据至是数据库
                 cursor.execute("INSERT INTO cj_product(original_id,brand_id,sales_location,product_name,product_price,original_currency, product_url,product_image,product_thumbnail,old_price,nick_name,cny_product_price,cny_exchange_rate,product_status,category_id,update_time)VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}');" .format(original_id,brand_id,sales_location,product_name,product_price,original_currency, product_url,product_image,product_thumbnail,old_price,nick_name,cny_product_price,cny_exchange_rate,product_status,category_id,update_time))
                 # 提交到数据库执行
                 db.commit()
@@ -95,6 +91,7 @@ def all(website_url,url,query_term,sales_location,category_id):
 
     # 关闭数据库连接
     db.close()
+
 
 website_url = "https://www.swarovski.com"
 url = "https://www.swarovski.com/Web_DE/en/json/json-result?"
