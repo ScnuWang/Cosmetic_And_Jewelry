@@ -33,5 +33,9 @@ sales_location = {'cn':1,'hk':2,'ge':3}
 # keys = [k for k in sales_location.keys()]
 # print(keys)
 
-for key in [k for k in sales_location.keys()]:
-    print(key)
+for location in [k for k in sales_location.keys()]:
+    website_url = website_url[location]
+    url = url[location]
+    location_id = sales_location[location]
+    for query_term_value in query_term[location].items():
+        print(query_term_value)
