@@ -24,18 +24,30 @@ query_term_ge = {1:'&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&Ca
                  7:'&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=KdcKaVgfUt4AAAFjkPF6fYwv&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FKdcKaVgfUt4AAAFjkPF6fYwv=nbgKaVgf.bgAAAFjwvF6fYwv&@Sort.FFSort=0&@Page=',
                  8:'&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=KdcKaVgfUt4AAAFjkPF6fYwv&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FKdcKaVgfUt4AAAFjkPF6fYwv=1lEKaVgf.bYAAAFjwvF6fYwv&@Sort.FFSort=0&@Page='}
 
-website_url = {'cn':'https://www.swarovski.com.cn','hk':'https://www.swarovski.com','ge':'https://www.swarovski.com'}
-url = {'cn':'https://www.swarovski.com.cn/Web_CN/en/json/json-result?','hk':'https://www.swarovski.com/Web_HK/en/json/json-result?','ge':'https://www.swarovski.com/Web_DE/en/json/json-result?'}
-query_term = {'cn':query_term_cn,'hk':query_term_hk,'ge':query_term_ge}
-sales_location = {'cn':1,'hk':2,'ge':3}
+website_url_dict = {'cn': 'https://www.swarovski.com.cn', 'hk': 'https://www.swarovski.com',
+               'ge': 'https://www.swarovski.com'}
+crawl_url_dict = {'cn': 'https://www.swarovski.com.cn/Web_CN/en/json/json-result?',
+       'hk': 'https://www.swarovski.com/Web_HK/en/json/json-result?',
+       'ge': 'https://www.swarovski.com/Web_DE/en/json/json-result?'}
+query_term_dict = {'cn': query_term_cn, 'hk': query_term_hk, 'ge': query_term_ge}
+sales_location_dict = {'cn': 1, 'hk': 2, 'ge': 3}
+
+
 
 # 列表推导式写法
-# keys = [k for k in sales_location.keys()]
+#keys = [k for k in website_url_dict.keys()]
 # print(keys)
 
-for location in [k for k in sales_location.keys()]:
-    website_url = website_url[location]
-    url = url[location]
-    location_id = sales_location[location]
-    for query_term_value in query_term[location].items():
-        print(query_term_value)
+
+for location in [k for k in sales_location_dict.keys()]:
+    website_url = website_url_dict[location]
+    crawl_url = crawl_url_dict[location]
+    location_id = sales_location_dict[location]
+
+    query_term_location = query_term_dict[location]
+
+    for category_id in range(1,len(query_term_location)+1):
+        print(query_term_location[category_id])
+        query_term = query_term_location[category_id]
+
+
