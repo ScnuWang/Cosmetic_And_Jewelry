@@ -4,6 +4,7 @@ import pymysql
 import re
 import time
 import os
+import logging
 from urllib import parse
 
 
@@ -29,9 +30,21 @@ def crawl(website_url, crawl_url, query_term, location_id, category_id):
     # 获取产品总页数
     page_count = 1
 
-    response = json.loads(requests.get(encode_url(crawl_url, query_term, page_count)).text)
-
-    # print(response['SearchResult']['PageCount'])
+    # 链接超时异常处理 : 每个十秒请求一次，一共请求十次
+    response = None
+    try:
+        response = json.loads(requests.get(encode_url(crawl_url, query_term, page_count)).text)
+    except TimeoutError as err:
+        logging.exception(err)
+        i = 0
+        while i < 10:
+            time.sleep(10)
+            response = json.loads(requests.get(encode_url(crawl_url, query_term, page_count)).text)
+            print(response)
+            if response['SearchResult']['PageCount']:
+                break
+            print("连接超时: 请求" + str(i) + "次 !")
+            i += 1
 
     # 打开数据库连接
     db = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='admin', db='data', charset="utf8")
@@ -42,7 +55,19 @@ def crawl(website_url, crawl_url, query_term, location_id, category_id):
     total_count = response['SearchResult']['PageCount']
     while page_count <= total_count:
         request_url = encode_url(crawl_url, query_term, page_count)
-        response = requests.get(request_url).text
+        try:
+            response = requests.get(request_url).text
+        except TimeoutError as err:
+            logging.exception(err)
+            i = 0
+            while i < 10:
+                time.sleep(10)
+                response = requests.get(request_url).text
+                if response['SearchResult']['PageCount']:
+                    break
+                print("连接超时: 请求 " + str(i) + " 次 !")
+                i += 1
+
         response_json = json.loads(response)
 
         # 保存数据为文件
@@ -109,32 +134,32 @@ def crawl(website_url, crawl_url, query_term, location_id, category_id):
 
 
 query_term_cn = {
-    1: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=EjEKaVgfTq0AAAFjMgl6fYzt&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FEjEKaVgfTq0AAAFjMgl6fYzt=8E8KaVgfTQYAAAFjiwl6fYzt&@Sort.FFSort=0&@Page=',
-    2: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=EjEKaVgfTq0AAAFjMgl6fYzt&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FEjEKaVgfTq0AAAFjMgl6fYzt=VXYKaVgfeAEAAAFjigl6fYzt&@Sort.FFSort=0&@Page=',
-    3: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=EjEKaVgfTq0AAAFjMgl6fYzt&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FEjEKaVgfTq0AAAFjMgl6fYzt=OhUKaVgfd_8AAAFjigl6fYzt&@Sort.FFSort=0&@Page=',
-    4: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=EjEKaVgfTq0AAAFjMgl6fYzt&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FEjEKaVgfTq0AAAFjMgl6fYzt=csIKaVgfNbsAAAFjjAl6fYzt&@Sort.FFSort=0&@Page=',
-    5: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=EjEKaVgfTq0AAAFjMgl6fYzt&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FEjEKaVgfTq0AAAFjMgl6fYzt=Z28KaVgfU2AAAAFjiQl6fYzt&@Sort.FFSort=0&@Page=',
-    6: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=EjEKaVgfTq0AAAFjMgl6fYzt&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FEjEKaVgfTq0AAAFjMgl6fYzt=K3IKaVgfd_0AAAFjigl6fYzt&@Sort.FFSort=0&@Page=',
-    7: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=EjEKaVgfTq0AAAFjMgl6fYzt&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FEjEKaVgfTq0AAAFjMgl6fYzt=OAQKaVgfNbkAAAFjjAl6fYzt&@Sort.FFSort=0&@Page=',
-    8: '@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=EjEKaVgfTq0AAAFjMgl6fYzt&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FEjEKaVgfTq0AAAFjMgl6fYzt=QG8KaVgfTqsAAAFjMgl6fYzt&@Sort.FFSort=0&@Page='}
+    1: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=OdUKaVgfCWUAAAFjlZt0CLpE&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FOdUKaVgfCWUAAAFjlZt0CLpE=A6EKaVgfCWcAAAFjlZt0CLpE&@Sort.FFSort=0&@Page=',
+    2: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=OdUKaVgfCWUAAAFjlZt0CLpE&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FOdUKaVgfCWUAAAFjlZt0CLpE=FGkKaVgfaUEAAAFjlpt0CLpE&@Sort.FFSort=0&@Page=',
+    3: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=OdUKaVgfCWUAAAFjlZt0CLpE&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FOdUKaVgfCWUAAAFjlZt0CLpE=PwwKaVgfQdQAAAFjl5t0CLpE&@Sort.FFSort=0&@Page=',
+    4: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=OdUKaVgfCWUAAAFjlZt0CLpE&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FOdUKaVgfCWUAAAFjlZt0CLpE=3qEKaVgfNWcAAAFjwJt0CLpE&@Sort.FFSort=0&@Page=',
+    5: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=OdUKaVgfCWUAAAFjlZt0CLpE&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FOdUKaVgfCWUAAAFjlZt0CLpE=VvEKaVgfMH8AAAFjvpt0CLpE&@Sort.FFSort=0&@Page=',
+    6: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=OdUKaVgfCWUAAAFjlZt0CLpE&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FOdUKaVgfCWUAAAFjlZt0CLpE=qN0KaVgffZUAAAFjv5t0CLpE&@Sort.FFSort=0&@Page=',
+    7: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=OdUKaVgfCWUAAAFjlZt0CLpE&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FOdUKaVgfCWUAAAFjlZt0CLpE=d74KaVgffZkAAAFjv5t0CLpE&@Sort.FFSort=0&@Page=',
+    8: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=OdUKaVgfCWUAAAFjlZt0CLpE&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FOdUKaVgfCWUAAAFjlZt0CLpE=.mIKaVgffZcAAAFjv5t0CLpE&@Sort.FFSort=0&@Page='}
 query_term_hk = {
-    1: '&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=fk0KaVgfKRcAAAFjv9t6fYxb&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2Ffk0KaVgfKRcAAAFjv9t6fYxb=xxcKaVgfHFgAAAFjvtt6fYxb&@Sort.FFSort=0&@Page=',
-    2: '&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=fk0KaVgfKRcAAAFjv9t6fYxb&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2Ffk0KaVgfKRcAAAFjv9t6fYxb=GSkKaVgfEYwAAAFj0tt6fYxb&@Sort.FFSort=0&@Page=',
-    3: '&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=fk0KaVgfKRcAAAFjv9t6fYxb&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2Ffk0KaVgfKRcAAAFjv9t6fYxb=mQUKaVgfEYoAAAFj0tt6fYxb&@Sort.FFSort=0&@Page=',
-    4: '&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=fk0KaVgfKRcAAAFjv9t6fYxb&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2Ffk0KaVgfKRcAAAFjv9t6fYxb=IsMKaVgf6IwAAAFjvdt6fYxb&@Sort.FFSort=0&@Page=',
-    5: '&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=fk0KaVgfKRcAAAFjv9t6fYxb&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2Ffk0KaVgfKRcAAAFjv9t6fYxb=a2AKaVgfcO8AAAFj0dt6fYxb&@Sort.FFSort=0&@Page=',
-    6: '&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=fk0KaVgfKRcAAAFjv9t6fYxb&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2Ffk0KaVgfKRcAAAFjv9t6fYxb=JisKaVgfEYgAAAFj0tt6fYxb&@Sort.FFSort=0&@Page=',
-    7: '&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=fk0KaVgfKRcAAAFjv9t6fYxb&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2Ffk0KaVgfKRcAAAFjv9t6fYxb=6MQKaVgfEY4AAAFj0tt6fYxb&@Sort.FFSort=0&@Page=',
-    8: '&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=fk0KaVgfKRcAAAFjv9t6fYxb&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2Ffk0KaVgfKRcAAAFjv9t6fYxb=9hIKaVgfHFkAAAFjvtt6fYxb&@Sort.FFSort=0&@Page='}
+    1: '&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=bzgKaVgfn2YAAAFji3V0CLb_&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2FbzgKaVgfn2YAAAFji3V0CLb_=gJ8KaVgfE1IAAAFjo3V0CLb_&@Sort.FFSort=0&@Page=',
+    2: '&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=bzgKaVgfn2YAAAFji3V0CLb_&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2FbzgKaVgfn2YAAAFji3V0CLb_=aPQKaVgfrsgAAAFjonV0CLb_&@Sort.FFSort=0&@Page=',
+    3: '&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=bzgKaVgfn2YAAAFji3V0CLb_&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2FbzgKaVgfn2YAAAFji3V0CLb_=JncKaVgflgUAAAFjpnV0CLb_&@Sort.FFSort=0&@Page=',
+    4: '&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=bzgKaVgfn2YAAAFji3V0CLb_&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2FbzgKaVgfn2YAAAFji3V0CLb_=POgKaVgfZEgAAAFjpHV0CLb_&@Sort.FFSort=0&@Page=',
+    5: '&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=bzgKaVgfn2YAAAFji3V0CLb_&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2FbzgKaVgfn2YAAAFji3V0CLb_=XokKaVgfZEoAAAFjpHV0CLb_&@Sort.FFSort=0&@Page=',
+    6: '&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=bzgKaVgfn2YAAAFji3V0CLb_&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2FbzgKaVgfn2YAAAFji3V0CLb_=pBEKaVgfmeQAAAFjoXV0CLb_&@Sort.FFSort=0&@Page=',
+    7: '&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=bzgKaVgfn2YAAAFji3V0CLb_&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2FbzgKaVgfn2YAAAFji3V0CLb_=7VQKaVgfZEYAAAFjpHV0CLb_&@Sort.FFSort=0&@Page=',
+    8: '&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=bzgKaVgfn2YAAAFji3V0CLb_&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2FbzgKaVgfn2YAAAFji3V0CLb_=QzgKaVgfE1QAAAFjo3V0CLb_&@Sort.FFSort=0&@Page='}
 query_term_ge = {
-    1: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=KdcKaVgfUt4AAAFjkPF6fYwv&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FKdcKaVgfUt4AAAFjkPF6fYwv=aZkKaVgf510AAAFjw_F6fYwv&@Sort.FFSort=0&@Page=',
-    2: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=KdcKaVgfUt4AAAFjkPF6fYwv&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FKdcKaVgfUt4AAAFjkPF6fYwv=UOUKaVgfAgYAAAFjwfF6fYwv&@Sort.FFSort=0&@Page=',
-    3: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=KdcKaVgfUt4AAAFjkPF6fYwv&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FKdcKaVgfUt4AAAFjkPF6fYwv=jCQKaVgf.bQAAAFjwvF6fYwv&@Sort.FFSort=0&@Page=',
-    4: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=KdcKaVgfUt4AAAFjkPF6fYwv&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FKdcKaVgfUt4AAAFjkPF6fYwv=uL0KaVgfQ1cAAAFjlPF6fYwv&@Sort.FFSort=0&@Page=',
-    5: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=KdcKaVgfUt4AAAFjkPF6fYwv&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FKdcKaVgfUt4AAAFjkPF6fYwv=FscKaVgfG1UAAAFjwPF6fYwv&@Sort.FFSort=0&@Page=',
-    6: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=KdcKaVgfUt4AAAFjkPF6fYwv&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FKdcKaVgfUt4AAAFjkPF6fYwv=pu4KaVgfAgQAAAFjwfF6fYwv&@Sort.FFSort=0&@Page=',
-    7: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=KdcKaVgfUt4AAAFjkPF6fYwv&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FKdcKaVgfUt4AAAFjkPF6fYwv=nbgKaVgf.bgAAAFjwvF6fYwv&@Sort.FFSort=0&@Page=',
-    8: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=KdcKaVgfUt4AAAFjkPF6fYwv&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FKdcKaVgfUt4AAAFjkPF6fYwv=1lEKaVgf.bYAAAFjwvF6fYwv&@Sort.FFSort=0&@Page='}
+    1: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=J7oKaVgflbcAAAFj5VJ0CLbV&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FJ7oKaVgflbcAAAFj5VJ0CLbV=iyoKaVgfUMIAAAFjCFN0CLbV&@Sort.FFSort=0&@Page=',
+    2: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=J7oKaVgflbcAAAFj5VJ0CLbV&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FJ7oKaVgflbcAAAFj5VJ0CLbV=EIYKaVgfUMQAAAFjCFN0CLbV&@Sort.FFSort=0&@Page=',
+    3: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=J7oKaVgflbcAAAFj5VJ0CLbV&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FJ7oKaVgflbcAAAFj5VJ0CLbV=ReMKaVgfjOMAAAFjB1N0CLbV&@Sort.FFSort=0&@Page=',
+    4: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=J7oKaVgflbcAAAFj5VJ0CLbV&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FJ7oKaVgflbcAAAFj5VJ0CLbV=tQsKaVgflbYAAAFj5VJ0CLbV&@Sort.FFSort=0&@Page=',
+    5: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=J7oKaVgflbcAAAFj5VJ0CLbV&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FJ7oKaVgflbcAAAFj5VJ0CLbV=6dwKaVgfjOEAAAFjB1N0CLbV&@Sort.FFSort=0&@Page=',
+    6: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=J7oKaVgflbcAAAFj5VJ0CLbV&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FJ7oKaVgflbcAAAFj5VJ0CLbV=lnEKaVgfUMYAAAFjCFN0CLbV&@Sort.FFSort=0&@Page=',
+    7: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=J7oKaVgflbcAAAFj5VJ0CLbV&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FJ7oKaVgflbcAAAFj5VJ0CLbV=VA4KaVgfUMoAAAFjCFN0CLbV&@Sort.FFSort=0&@Page=',
+    8: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=J7oKaVgflbcAAAFj5VJ0CLbV&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FJ7oKaVgflbcAAAFj5VJ0CLbV=zB4KaVgfUMgAAAFjCFN0CLbV&@Sort.FFSort=0&@Page='}
 
 website_url_dict = {'cn': 'https://www.swarovski.com.cn', 'hk': 'https://www.swarovski.com',
                'ge': 'https://www.swarovski.com'}
