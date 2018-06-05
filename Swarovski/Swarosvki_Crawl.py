@@ -7,7 +7,7 @@ from datetime import datetime
 import os
 import logging
 import sched
-
+from apscheduler.schedulers.blocking import BlockingScheduler
 from urllib import parse
 
 
@@ -188,11 +188,15 @@ def doCrawl():
             crawl(website_url, crawl_url, query_term, location_id, category_id)
             print(str(location_id) + "-" + str(category_id) + " finished !!!")
 
+
 if __name__ == '__main__':
     # 定时任务
-    while True:
-        scheduler = sched.scheduler()
-        scheduler.enter(5,0,doCrawl)
-        scheduler.run()
-        logging.info(datetime.now())
-        print(time.strftime('%Y-%m-%d %X'))
+    scheduler = BlockingScheduler()
+    #  每天22点开始执行，每3秒执行一次
+    # scheduler.add_job(doCrawl, 'cron', hour=22, minute=0, second='*/3')
+    #  每天12点执行，执行一次
+    scheduler.add_job(doCrawl, 'cron', hour=12, minute=0, second=0)
+    try:
+        scheduler.start()
+    except BaseException:
+        scheduler.shutdown()
