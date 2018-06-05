@@ -1,7 +1,6 @@
 
 2018-06-04（星期一）上午还可以用，下午就突然不能用了,被修改时间应该是2018-06-04下午
 修改的周期可能是一周.
-
 query_term_cn = {
     1: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=EjEKaVgfTq0AAAFjMgl6fYzt&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FEjEKaVgfTq0AAAFjMgl6fYzt=8E8KaVgfTQYAAAFjiwl6fYzt&@Sort.FFSort=0&@Page=',
     2: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=EjEKaVgfTq0AAAFjMgl6fYzt&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FEjEKaVgfTq0AAAFjMgl6fYzt=VXYKaVgfeAEAAAFjigl6fYzt&@Sort.FFSort=0&@Page=',
@@ -29,3 +28,33 @@ query_term_ge = {
     6: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=KdcKaVgfUt4AAAFjkPF6fYwv&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FKdcKaVgfUt4AAAFjkPF6fYwv=pu4KaVgfAgQAAAFjwfF6fYwv&@Sort.FFSort=0&@Page=',
     7: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=KdcKaVgfUt4AAAFjkPF6fYwv&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FKdcKaVgfUt4AAAFjkPF6fYwv=nbgKaVgf.bgAAAFjwvF6fYwv&@Sort.FFSort=0&@Page=',
     8: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=KdcKaVgfUt4AAAFjkPF6fYwv&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FKdcKaVgfUt4AAAFjkPF6fYwv=1lEKaVgf.bYAAAFjwvF6fYwv&@Sort.FFSort=0&@Page='}
+
+2018-06-05 (星期二)
+
+query_term_cn = {
+    1: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=OdUKaVgfCWUAAAFjlZt0CLpE&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FOdUKaVgfCWUAAAFjlZt0CLpE=A6EKaVgfCWcAAAFjlZt0CLpE&@Sort.FFSort=0&@Page=',
+    2: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=OdUKaVgfCWUAAAFjlZt0CLpE&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FOdUKaVgfCWUAAAFjlZt0CLpE=FGkKaVgfaUEAAAFjlpt0CLpE&@Sort.FFSort=0&@Page=',
+    3: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=OdUKaVgfCWUAAAFjlZt0CLpE&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FOdUKaVgfCWUAAAFjlZt0CLpE=PwwKaVgfQdQAAAFjl5t0CLpE&@Sort.FFSort=0&@Page=',
+    4: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=OdUKaVgfCWUAAAFjlZt0CLpE&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FOdUKaVgfCWUAAAFjlZt0CLpE=3qEKaVgfNWcAAAFjwJt0CLpE&@Sort.FFSort=0&@Page=',
+    5: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=OdUKaVgfCWUAAAFjlZt0CLpE&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FOdUKaVgfCWUAAAFjlZt0CLpE=VvEKaVgfMH8AAAFjvpt0CLpE&@Sort.FFSort=0&@Page=',
+    6: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=OdUKaVgfCWUAAAFjlZt0CLpE&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FOdUKaVgfCWUAAAFjlZt0CLpE=qN0KaVgffZUAAAFjv5t0CLpE&@Sort.FFSort=0&@Page=',
+    7: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=OdUKaVgfCWUAAAFjlZt0CLpE&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FOdUKaVgfCWUAAAFjlZt0CLpE=d74KaVgffZkAAAFjv5t0CLpE&@Sort.FFSort=0&@Page=',
+    8: '&@QueryTerm=*&CategoryUUIDLevelX=tfYKaSUCEOsAAAEn_NtToUKM&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM=OdUKaVgfCWUAAAFjlZt0CLpE&CategoryUUIDLevelX%2FtfYKaSUCEOsAAAEn_NtToUKM%2FOdUKaVgfCWUAAAFjlZt0CLpE=.mIKaVgffZcAAAFjv5t0CLpE&@Sort.FFSort=0&@Page='}
+query_term_hk = {
+    1: '&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=bzgKaVgfn2YAAAFji3V0CLb_&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2FbzgKaVgfn2YAAAFji3V0CLb_=gJ8KaVgfE1IAAAFjo3V0CLb_&@Sort.FFSort=0&@Page=',
+    2: '&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=bzgKaVgfn2YAAAFji3V0CLb_&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2FbzgKaVgfn2YAAAFji3V0CLb_=aPQKaVgfrsgAAAFjonV0CLb_&@Sort.FFSort=0&@Page=',
+    3: '&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=bzgKaVgfn2YAAAFji3V0CLb_&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2FbzgKaVgfn2YAAAFji3V0CLb_=JncKaVgflgUAAAFjpnV0CLb_&@Sort.FFSort=0&@Page=',
+    4: '&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=bzgKaVgfn2YAAAFji3V0CLb_&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2FbzgKaVgfn2YAAAFji3V0CLb_=POgKaVgfZEgAAAFjpHV0CLb_&@Sort.FFSort=0&@Page=',
+    5: '&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=bzgKaVgfn2YAAAFji3V0CLb_&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2FbzgKaVgfn2YAAAFji3V0CLb_=XokKaVgfZEoAAAFjpHV0CLb_&@Sort.FFSort=0&@Page=',
+    6: '&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=bzgKaVgfn2YAAAFji3V0CLb_&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2FbzgKaVgfn2YAAAFji3V0CLb_=pBEKaVgfmeQAAAFjoXV0CLb_&@Sort.FFSort=0&@Page=',
+    7: '&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=bzgKaVgfn2YAAAFji3V0CLb_&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2FbzgKaVgfn2YAAAFji3V0CLb_=7VQKaVgfZEYAAAFjpHV0CLb_&@Sort.FFSort=0&@Page=',
+    8: '&@QueryTerm=*&CategoryUUIDLevelX=fQcKaSUCzHcAAAEnktxToUKM&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM=bzgKaVgfn2YAAAFji3V0CLb_&CategoryUUIDLevelX%2FfQcKaSUCzHcAAAEnktxToUKM%2FbzgKaVgfn2YAAAFji3V0CLb_=QzgKaVgfE1QAAAFjo3V0CLb_&@Sort.FFSort=0&@Page='}
+query_term_ge = {
+    1: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=J7oKaVgflbcAAAFj5VJ0CLbV&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FJ7oKaVgflbcAAAFj5VJ0CLbV=iyoKaVgfUMIAAAFjCFN0CLbV&@Sort.FFSort=0&@Page=',
+    2: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=J7oKaVgflbcAAAFj5VJ0CLbV&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FJ7oKaVgflbcAAAFj5VJ0CLbV=EIYKaVgfUMQAAAFjCFN0CLbV&@Sort.FFSort=0&@Page=',
+    3: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=J7oKaVgflbcAAAFj5VJ0CLbV&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FJ7oKaVgflbcAAAFj5VJ0CLbV=ReMKaVgfjOMAAAFjB1N0CLbV&@Sort.FFSort=0&@Page=',
+    4: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=J7oKaVgflbcAAAFj5VJ0CLbV&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FJ7oKaVgflbcAAAFj5VJ0CLbV=tQsKaVgflbYAAAFj5VJ0CLbV&@Sort.FFSort=0&@Page=',
+    5: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=J7oKaVgflbcAAAFj5VJ0CLbV&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FJ7oKaVgflbcAAAFj5VJ0CLbV=6dwKaVgfjOEAAAFjB1N0CLbV&@Sort.FFSort=0&@Page=',
+    6: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=J7oKaVgflbcAAAFj5VJ0CLbV&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FJ7oKaVgflbcAAAFj5VJ0CLbV=lnEKaVgfUMYAAAFjCFN0CLbV&@Sort.FFSort=0&@Page=',
+    7: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=J7oKaVgflbcAAAFj5VJ0CLbV&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FJ7oKaVgflbcAAAFj5VJ0CLbV=VA4KaVgfUMoAAAFjCFN0CLbV&@Sort.FFSort=0&@Page=',
+    8: '&@QueryTerm=*&CategoryUUIDLevelX=B8kKaSUCmAEAAAEnLNBToUKM&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM=J7oKaVgflbcAAAFj5VJ0CLbV&CategoryUUIDLevelX%2FB8kKaSUCmAEAAAEnLNBToUKM%2FJ7oKaVgflbcAAAFj5VJ0CLbV=zB4KaVgfUMgAAAFjCFN0CLbV&@Sort.FFSort=0&@Page='}

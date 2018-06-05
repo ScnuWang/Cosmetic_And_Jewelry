@@ -3,8 +3,11 @@ import json
 import pymysql
 import re
 import time
+from datetime import datetime
 import os
 import logging
+import sched
+
 from urllib import parse
 
 
@@ -170,16 +173,26 @@ query_term_dict = {'cn': query_term_cn, 'hk': query_term_hk, 'ge': query_term_ge
 sales_location_dict = {'cn': 1, 'hk': 2, 'ge': 3}
 
 
-# 按所有的区域数量确定最外层循环次数
-for location in [k for k in sales_location_dict.keys()]:
 
-    website_url = website_url_dict[location]
-    crawl_url = crawl_url_dict[location]
-    location_id = sales_location_dict[location]
-    query_term_location = query_term_dict[location]
+def doCrawl():
+    # 按所有的区域数量确定最外层循环次数
+    for location in [k for k in sales_location_dict.keys()]:
+        website_url = website_url_dict[location]
+        crawl_url = crawl_url_dict[location]
+        location_id = sales_location_dict[location]
+        query_term_location = query_term_dict[location]
 
-    for category_id in range(1,len(query_term_location)+1):
-        # print(query_term_location[category_id])
-        query_term = query_term_location[category_id]
-        crawl(website_url, crawl_url, query_term, location_id, category_id)
-        print(str(location_id) + "-"+str(category_id) + " finished !!!")
+        for category_id in range(1, len(query_term_location) + 1):
+            # print(query_term_location[category_id])
+            query_term = query_term_location[category_id]
+            crawl(website_url, crawl_url, query_term, location_id, category_id)
+            print(str(location_id) + "-" + str(category_id) + " finished !!!")
+
+if __name__ == '__main__':
+    # 定时任务
+    while True:
+        scheduler = sched.scheduler()
+        scheduler.enter(5,0,doCrawl)
+        scheduler.run()
+        logging.info(datetime.now())
+        print(time.strftime('%Y-%m-%d %X'))
