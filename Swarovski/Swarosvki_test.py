@@ -37,15 +37,18 @@ def crawl(website_url, crawl_url, query_term, location_id, category_id):
     response = None
     try:
         response = json.loads(requests.get(encode_url(crawl_url, query_term, page_count)).text)
-    except TimeoutError as err:
+    except BaseException as err:
         logging.exception(err)
         i = 0
-        while i < 10:
+        while i < 50:
             time.sleep(10)
             response = json.loads(requests.get(encode_url(crawl_url, query_term, page_count)).text)
             print(response)
-            if response['SearchResult']['PageCount']:
-                break
+            try:
+                if response['SearchResult']:
+                    break
+            except BaseException:
+                pass
             print("连接超时: 请求" + str(i) + "次 !")
             i += 1
 
@@ -60,14 +63,17 @@ def crawl(website_url, crawl_url, query_term, location_id, category_id):
         request_url = encode_url(crawl_url, query_term, page_count)
         try:
             response = requests.get(request_url).text
-        except TimeoutError as err:
+        except BaseException as err:
             logging.exception(err)
             i = 0
-            while i < 10:
+            while i < 50:
                 time.sleep(10)
                 response = requests.get(request_url).text
-                if response['SearchResult']['PageCount']:
-                    break
+                try:
+                    if response['SearchResult']:
+                        break
+                except BaseException:
+                    pass
                 print("连接超时: 请求 " + str(i) + " 次 !")
                 i += 1
 
