@@ -201,7 +201,7 @@ if __name__ == '__main__':
     #  每天22点开始执行，每3秒执行一次
     # scheduler.add_job(doCrawl, 'cron', hour=22, minute=0, second='*/3')
     #  每天12点执行，执行一次
-    scheduler.add_job(doCrawl, 'cron', hour=12, minute=0, second=0)
+    scheduler.add_job(doCrawl, 'cron', hour=17, minute=20, second=0)
     try:
         scheduler.start()
     except BaseException:

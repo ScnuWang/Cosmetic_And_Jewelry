@@ -1,7 +1,12 @@
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DECIMAL, create_engine, DateTime
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+
 
 Base = declarative_base()
+engine = create_engine("mysql+pymysql://root:admin@localhost/data?charset=utf8", echo=True)
+Base.metadata.create_all(engine)
+DBSession = sessionmaker(bind=engine)
 
 # 产品表
 class Cj_Product(Base):
@@ -24,12 +29,15 @@ class Cj_Product(Base):
     category_id = Column('category_id', Integer, comment="产品分类")
     update_time = Column('update_time', DateTime, comment='更新时间')
 
+
 # 品牌表
 class Cj_Brand(Base):
     __tablename__ = 'cj_brand'
+    __table_args__ = {"useexisting": True}
     id = Column('id', Integer, primary_key=True, autoincrement=True)
     brand_name = Column('brand_name', String(255), comment="品牌名称")
     update_time = Column('update_time', DateTime, comment='更新时间')
+
 
 # 分类表
 class Cj_Category(Base):
@@ -39,6 +47,7 @@ class Cj_Category(Base):
     category_name_en = Column('category_name_en', String(255), comment="英文名称")
     update_time = Column('update_time', DateTime, comment='更新时间')
 
+
 # 汇率表
 class Cj_Currency(Base):
     __tablename__ = 'cj_currency'
@@ -47,6 +56,7 @@ class Cj_Currency(Base):
     exchange_rate_cny = Column('exchange_rate_cny', String(255), comment="对换人民币汇率")
     update_time = Column('update_time', DateTime, comment='更新时间')
 
+
 # 销售地点表
 class Cj_Location(Base):
     __tablename__ = 'cj_location'
@@ -54,8 +64,9 @@ class Cj_Location(Base):
     sales_location = Column('sales_location', String(255), comment="销售地点")
     update_time = Column('update_time', DateTime, comment='更新时间')
 
+# 产品状态表
 class Cj_Product_Status(Base):
-    __tablename__ = 'cj_location'
+    __tablename__ = 'cj_product_status'
     id = Column('id', Integer, primary_key=True, autoincrement=True)
     product_status = Column('product_status', String(255), comment="销售地点")
     update_time = Column('update_time', DateTime, comment='更新时间')
