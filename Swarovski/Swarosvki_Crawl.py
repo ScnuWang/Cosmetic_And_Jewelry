@@ -1,14 +1,14 @@
 import requests
 import json
-import pymysql
 import re
 import time
-from datetime import datetime
 import os
 import logging
-import sched
 from apscheduler.schedulers.blocking import BlockingScheduler
 from urllib import parse
+
+
+from database.DBUtils import conn,cj_product
 
 
 # 一个地域的所有分类
@@ -51,11 +51,6 @@ def crawl(website_url, crawl_url, query_term, location_id, category_id):
                 pass
             print("连接超时: 请求" + str(i) + "次 !")
             i += 1
-
-    # 打开数据库连接
-    db = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='admin', db='data', charset="utf8")
-    # 使用cursor()方法获取操作游标
-    cursor = db.cursor()
 
     # 解析数据
     total_count = response['SearchResult']['PageCount']
@@ -115,31 +110,23 @@ def crawl(website_url, crawl_url, query_term, location_id, category_id):
                 old_price = int(re.sub('\D', "", product['OldPrice']))
             else:
                 old_price = int(re.sub('\D', "", product['OldPrice']))/100
-            nick_name = ""
+            product_name_zh = ""
             cny_product_price = 0.00
             cny_exchange_rate = 0.00
-            product_status = 1  # 1：在售；2：下架；3新上；4：异常
-            # category_id = 1
-            update_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+            product_status_id = 1  # 1：在售；2：下架；3新上；4：异常
+            update_time = time.strftime("%Y-%m-%d 12:00:00", time.localtime())
 
             try:
                 # 执行sql语句
-                # 保存数据至是数据库
-                cursor.execute(
-                    "INSERT INTO cj_product(original_id,brand_id,location_id,product_name,product_price,original_currency, product_url,product_image,product_thumbnail,old_price,nick_name,cny_product_price,cny_exchange_rate,product_status,category_id,update_time)VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}');".format(
-                        original_id, brand_id, location_id, product_name, product_price, original_currency,
-                        product_url, product_image, product_thumbnail, old_price, nick_name, cny_product_price,
-                        cny_exchange_rate, product_status, category_id, update_time))
-                # 提交到数据库执行
-                db.commit()
+                # 保存数据至数据库
+                ins = cj_product.insert().values(original_id=original_id, brand_id=brand_id, location_id=location_id, product_name=product_name, product_price=product_price, original_currency=original_currency,
+                        product_url=product_url, product_image=product_image, product_thumbnail=product_thumbnail, old_price=old_price, product_name_zh=product_name_zh, cny_product_price=cny_product_price,
+                        cny_exchange_rate=cny_exchange_rate, product_status_id=product_status_id, category_id=category_id, update_time=update_time)
+                conn.execute(ins)
             except BaseException  as err:
                 # 如果发生错误则回滚
                 print(err)
-                db.rollback()
         page_count += 1
-
-    # 关闭数据库连接
-    db.close()
 
 
 query_term_cn = {
@@ -201,7 +188,7 @@ if __name__ == '__main__':
     #  每天22点开始执行，每3秒执行一次
     # scheduler.add_job(doCrawl, 'cron', hour=22, minute=0, second='*/3')
     #  每天12点执行，执行一次
-    scheduler.add_job(doCrawl, 'cron', hour=12, minute=0, second=0)
+    scheduler.add_job(doCrawl, 'cron', hour=17, minute=58, second=0)
     try:
         scheduler.start()
     except BaseException:
