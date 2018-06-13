@@ -3,8 +3,6 @@ from sqlalchemy import Table,Column,Integer,String,DateTime,DECIMAL,MetaData,For
 
 engine = create_engine("mysql+pymysql://root:admin@localhost/data?charset=utf8", echo=True)
 metaData = MetaData()
-# 在创建之前检查每个表的存在情况，因此可以安全地调用多次
-metaData.create_all(engine)
 conn = engine.connect()
 
 # 产品表

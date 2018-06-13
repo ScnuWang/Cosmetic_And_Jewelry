@@ -1,7 +1,7 @@
 ### 本项目主要用于抓取一线品牌的首饰以及化妆品相关产品的数据。
 
 ### 技术栈
-Python 3.6 + Requests + Pymysql
+Python 3.6 + Requests + Pymysql + Apscheduler + Sqlalchemy
 
 ### 需求
 
